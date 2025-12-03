@@ -74,7 +74,7 @@ void loop() {
   // First 16 values → shield
   setShieldServos(motorAngles, 3, 7, pwm1);
 
-  delay(1000);
+  delay(300);
 
   // Last-row columns 0–2 → direct Arduino servos
   setExtraServos(motorAngles);
