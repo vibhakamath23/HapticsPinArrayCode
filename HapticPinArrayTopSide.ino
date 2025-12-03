@@ -19,13 +19,11 @@ const int EXTRA_PIN_2 = 10;
 const int EXTRA_PIN_3 = 11;
 
 // ANGLES FOR THE SERVOS 
-int n = 150;
-int motorAngles[5][4] = {
-  {n,  n, n, n},    
-  {n,  n, n, n},   
-  {n, n, n, n},    
-  {n, n, n, n},    // first four rows go to the shield, channels increase left to right, top to bottom
-  {180, 180, 180, n}      // col 0–2 go to extra servos, col 3 ignored
+int n = 0;
+int motorAngles[3][7] = {
+  {n, n, n, n, n, n, n},    // first two rows go to the shield, channels increase right to left, top to bottom
+  {n, n, n, n, n, n, n},   
+  {n, n, n, n, n, n, n},    // col 0, 1 from the right go to shield, col 2, 3, 4 from the right go to extra servos (need 180 not 150 for down)  
 };
 
 int angleToPulse(int angle) {
@@ -33,7 +31,7 @@ int angleToPulse(int angle) {
 }
 
 // Sends the first 16 angles to the shield (channels 0–15)
-void setShieldServos(int array[][4], int rows, int cols, Adafruit_PWMServoDriver &driver) {
+void setShieldServos(int array[][7], int rows, int cols, Adafruit_PWMServoDriver &driver) {
   int channel = 0;
 
   for (int row = 0; row < rows; row++) {
@@ -50,13 +48,13 @@ void setShieldServos(int array[][4], int rows, int cols, Adafruit_PWMServoDriver
 }
 
 // sends the last row, columns 0–2 to the 3 extra servos
-void setExtraServos(int array[][4]) {
+void setExtraServos(int array[][7]) {
   delay(500);
-  extra1.write(array[4][0]);
+  extra1.write(array[2][4]);
   delay(500);
-  extra2.write(array[4][1]);
+  extra2.write(array[2][3]);
   delay(500);
-  extra3.write(array[4][2]);
+  extra3.write(array[2][2]);
   delay(500);
 }
 
@@ -74,7 +72,7 @@ void setup() {
 void loop() {
 
   // First 16 values → shield
-  setShieldServos(motorAngles, 5, 4, pwm1);
+  setShieldServos(motorAngles, 3, 7, pwm1);
 
   delay(1000);
 
@@ -83,4 +81,3 @@ void loop() {
 
   delay(1000);
 }
-
