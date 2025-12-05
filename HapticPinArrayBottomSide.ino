@@ -9,12 +9,37 @@ Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 #define SERVO_MAX 600
 
 // ANGLES FOR THE SERVOS 
-int n = 0;
-int motorAngles[3][7] = {
+int n = 45; // GO TO 160 !!!! max 
+int motorAnglesZero[3][7] = {
   {n, n, n, n, n, n, n},   
   {n, n, n, n, n, n, n},   
-  {n, n, n, n, n, n, n},    
+  {n, n, n, n, n, n, n},     // 0 40 65 99 highest to lowest
 };
+
+int white = 99;
+int blue = 65;
+int yellow = 0;
+int red = 40;
+
+// Japan -> Denmark -> Sweden
+int motorAnglesJapan[3][7] = {
+  {white, white, red, red, red, white, white},   
+  {white, white, white, red - 10, white, white, white},   
+  {white, white, white, white, white, white, white},     // 0 40 65 99 highest to lowest
+};
+
+int motorAnglesDenmark[3][7] = {
+  {white, white, white, white, white, white, white},   
+  {red + 10, red, white, red, red - 10, red, red - 10},   
+  {red - 20, red - 10, white, red, red, red, red},       // 0 40 65 99 highest to lowest
+};
+
+int motorAnglesSweden[3][7] = {
+  {yellow, yellow, yellow, yellow, yellow, yellow, yellow},   
+  {blue, blue, yellow, blue, blue, blue, blue},   
+  {blue, blue, yellow, blue, blue, blue, blue},       // 0 40 65 99 highest to lowest
+}; 
+
 
 int angleToPulse(int angle) {
   return map(angle, 0, 180, SERVO_MIN, SERVO_MAX);
@@ -50,7 +75,7 @@ void setup() {
 
 void loop() {
 
-  setShieldServos(motorAngles, 3, 7, pwm1);
+  setShieldServos(motorAnglesZero, 3, 7, pwm1);
 
   delay(1000);
 }
