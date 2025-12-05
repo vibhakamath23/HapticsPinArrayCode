@@ -8,6 +8,13 @@ Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 #define SERVO_MIN 150
 #define SERVO_MAX 600
 
+#define ZERO 0
+#define JAP 1
+#define DEN 2
+#define SWE 3
+//Choose
+#define FLAG_NAME ZERO
+
 // EXTRA ARDUINO DIRECT SERVOS 
 Servo extra1;
 Servo extra2;
@@ -96,13 +103,33 @@ void setup() {
 
 void loop() {
 
-  // First 16 values → shield
-  setShieldServos(motorAnglesZero, 3, 7, pwm1);
+  int (*selectedMatrix)[7];
+
+  // Pick based on FLAG_NAME
+  switch (FLAG_NAME) {
+    case ZERO:
+      selectedMatrix = motorAnglesZero;
+      break;
+    case JAP:
+      selectedMatrix = motorAnglesJapan;
+      break;
+    case DEN:
+      selectedMatrix = motorAnglesDenmark;
+      break;
+    case SWE:
+      selectedMatrix = motorAnglesSweden;
+      break;
+    default:
+      selectedMatrix = motorAnglesZero; // fallback
+  }
+
+  // Use selected matrix
+  setShieldServos(selectedMatrix, 3, 7, pwm1);
 
   delay(300);
 
   // Last-row columns 0–2 → direct Arduino servos
-  setExtraServos(motorAnglesZero);
+  setExtraServos(selectedMatrix);
 
   delay(1000);
 }
