@@ -14,16 +14,39 @@ Servo extra2;
 Servo extra3;
 
 // Arduino pins
-const int EXTRA_PIN_1 = 9;
+const int EXTRA_PIN_1 = 11;
 const int EXTRA_PIN_2 = 10;
-const int EXTRA_PIN_3 = 11;
+const int EXTRA_PIN_3 = 9;
+
+int white = 99;
+int blue = 65;
+int yellow = 0;
+int red = 40;
 
 // ANGLES FOR THE SERVOS 
-int n = 0;
-int motorAngles[3][7] = {
-  {n, n, n, n, n, n, n},    // first two rows go to the shield, channels increase right to left, top to bottom
+int n = 45;
+int motorAnglesZero[3][7] = {
+  {n, n, n, n, n, n, n},    // first two rows go to the shield, channels increase right to left, top to bottom (5th goes to 160)
   {n, n, n, n, n, n, n},   
-  {n, n, n, n, n, n, n},    // col 0, 1 from the right go to shield, col 2, 3, 4 from the right go to extra servos (need 180 not 150 for down)  
+  {n, n, n, n, n, n, n},    // col 0, 1 from the left go to shield, col 2, 3, 4 from the left go to extra servos (need 180 not 150 for down)  
+};
+
+int motorAnglesJapan[3][7] = {
+  {white, white, white, white, white, white, white},    
+  {white, white, white, red - 10, white, white, white},   
+  {white, white, red, red, red, white, white},     
+};
+
+int motorAnglesDenmark[3][7] = {
+  {red, red - 15, white, red, red, red - 10, red},    
+  {red, red, white, red, red, red, red},   
+  {white, white, white, white, white, white, white},     
+};
+
+int motorAnglesSweden[3][7] = {
+  {blue, blue, yellow, blue, blue, blue, blue},    
+  {blue, blue, yellow, blue, blue, blue, blue},   
+  {yellow, yellow, yellow, yellow, yellow, yellow, yellow},     
 };
 
 int angleToPulse(int angle) {
@@ -69,15 +92,19 @@ void setup() {
   extra3.attach(EXTRA_PIN_3);
 }
 
+//int motorAngles[3][7] = motorAnglesJapan
+
 void loop() {
 
   // First 16 values → shield
-  setShieldServos(motorAngles, 3, 7, pwm1);
+  setShieldServos(motorAnglesZero, 3, 7, pwm1);
 
   delay(300);
 
   // Last-row columns 0–2 → direct Arduino servos
-  setExtraServos(motorAngles);
+  setExtraServos(motorAnglesZero);
 
   delay(1000);
 }
+
+
